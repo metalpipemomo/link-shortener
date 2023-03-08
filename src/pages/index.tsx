@@ -8,13 +8,19 @@ const Home: NextPage = () => {
     const mutation = api.link.createLink.useMutation({});
     const urlInput = useRef<HTMLInputElement>(null);
 
-    const SubmissionHandler = (e: FormEvent) => {
+    const SubmissionHandler = (e: FormEvent): void => {
         e.preventDefault();
         try {
             mutation.mutate({ longLink: urlInput.current?.value as string });
         } catch {
             console.error('Something went wrong...');
         }
+    };
+
+    const CopyHandler = (url: string): void => {
+        navigator.clipboard
+            .writeText(`${window.location.toString()}${url}`)
+            .catch((err: PromiseRejectedResult) => console.log(err.reason));
     };
 
     return (
@@ -53,13 +59,9 @@ const Home: NextPage = () => {
                         </form>
                         {mutation.isSuccess ? (
                             <p
-                                onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        `${window.location.toString()}${
-                                            mutation.data.newLink
-                                        }`
-                                    );
-                                }}
+                                onClick={() =>
+                                    CopyHandler(mutation.data.newLink)
+                                }
                                 className={
                                     'mt-4 text-center text-[hsl(280,100%,70%)]'
                                 }>
