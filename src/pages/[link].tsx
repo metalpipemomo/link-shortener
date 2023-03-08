@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 const RedirectPage: NextPage = () => {
     return (
-        <div>
+        <>
             <Head>
                 <title>short</title>
                 <meta name={'description'} content={'link shortener'} />
@@ -16,7 +16,7 @@ const RedirectPage: NextPage = () => {
                     <p>redirecting...</p>
                 </div>
             </body>
-        </div>
+        </>
     );
 };
 
@@ -24,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (
     ctx: GetServerSidePropsContext
 ) => {
     const { link } = ctx.params!;
-    console.log(link);
     const longLink =
         (await prisma.link.findUnique({
             where: { newLink: link as string },
@@ -34,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (
     if (longLink) {
         return {
             redirect: {
-                destination: `https://${longLink?.fullLink}`,
+                destination: longLink?.fullLink,
                 permanent: false,
             },
         };
