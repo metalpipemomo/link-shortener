@@ -10,7 +10,11 @@ const Home: NextPage = () => {
 
     const SubmissionHandler = (e: FormEvent) => {
         e.preventDefault();
-        mutation.mutate({ longLink: urlInput.current?.value! });
+        try {
+            mutation.mutate({ longLink: urlInput.current?.value as string });
+        } catch {
+            console.error('Something went wrong...');
+        }
     };
 
     return (
@@ -49,11 +53,13 @@ const Home: NextPage = () => {
                         </form>
                         {mutation.isSuccess ? (
                             <p
-                                onClick={() =>
+                                onClick={() => {
                                     navigator.clipboard.writeText(
-                                        `localhost:3000/${mutation.data.newLink}`
-                                    )
-                                }
+                                        `${window.location.toString()}${
+                                            mutation.data.newLink
+                                        }`
+                                    );
+                                }}
                                 className={
                                     'mt-4 text-center text-[hsl(280,100%,70%)]'
                                 }>
