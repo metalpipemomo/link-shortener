@@ -31,8 +31,8 @@ const Home: NextPage = () => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
             <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] md:flex-row lg:flex-row'>
-                <div className={'flex w-full flex-col'}>
-                    <div className={'m-auto'}>
+                <div className={'flex w-full flex-col py-5'}>
+                    <div className={'m-auto md:p-5'}>
                         <h1
                             className={
                                 'text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]'
@@ -72,9 +72,13 @@ const Home: NextPage = () => {
                         ) : null}
                     </div>
                 </div>
-                <div className={'m-auto h-96 w-0.5 bg-white opacity-40'} />
-                <div className={'flex w-full flex-col space-y-4'}>
-                    <div className={'m-auto w-96 space-y-4'}>
+                <div
+                    className={
+                        'm-5 h-0.5 w-96 bg-white opacity-40 md:m-auto md:h-96 md:w-1'
+                    }
+                />
+                <div className={'flex w-full flex-col space-y-4 py-5'}>
+                    <div className={'m-auto max-w-sm space-y-4 md:p-5'}>
                         <p className={'overflow-ellipsis'}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit. Proin vitae ipsum auctor, varius nibh
