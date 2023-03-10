@@ -48,10 +48,17 @@ const Home: NextPage = () => {
                         <form
                             onSubmit={SubmissionHandler}
                             className={'m-auto flex w-80 flex-col space-y-2'}>
-                            <input type={'text'} ref={urlInput} />
+                            <input
+                                type={'text'}
+                                ref={urlInput}
+                                placeholder='https://www.google.com/'
+                                className={
+                                    'mb-2 rounded border-none p-1 px-2 outline outline-2 outline-transparent transition-all duration-100 ease-in-out focus:outline-purple-500'
+                                }
+                            />
                             <button
                                 className={
-                                    'focus:shadow-outline m-auto w-24 rounded bg-purple-500 py-2 px-4 font-bold text-white shadow hover:bg-purple-400 focus:outline-none'
+                                    'focus:shadow-outline m-auto w-24 rounded bg-purple-500 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out hover:bg-purple-400 focus:outline-none'
                                 }
                                 type={'submit'}>
                                 Submit
