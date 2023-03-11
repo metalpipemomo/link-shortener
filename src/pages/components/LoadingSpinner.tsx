@@ -1,12 +1,10 @@
-import { NextPage } from 'next';
-
 interface Props {
     size: number;
     color: string;
     className?: string;
 }
 
-const LoadingSpinner: NextPage<Props> = ({ size, color, className }) => {
+const LoadingSpinner: React.FC<Props> = ({ size, color, className }) => {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
