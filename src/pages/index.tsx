@@ -4,6 +4,7 @@ import { FormEvent, useRef } from 'react';
 import { api } from '~/utils/api';
 
 import AuthButton from './components/AuthButton';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const Home: NextPage = () => {
     const mutation = api.link.createLink.useMutation({});
@@ -46,28 +47,40 @@ const Home: NextPage = () => {
                         <h2 className={'mb-8 text-center tracking-tight'}>
                             Paste your link below!
                         </h2>
-                        <form
-                            onSubmit={SubmissionHandler}
-                            className={'m-auto flex w-80 flex-col space-y-2'}>
-                            <input
-                                type={'text'}
-                                ref={urlInput}
-                                placeholder='https://www.google.com/'
-                                pattern={
-                                    'https?://(?!.)(?!.*..)[a-zA-Z0-9.]*.[a-zA-Z]'
-                                }
-                                className={
-                                    'mb-2 rounded border-none p-1 px-2 outline outline-2 outline-transparent transition-all duration-100 ease-in-out focus:outline-purple-500'
-                                }
+                        {mutation.isLoading ? (
+                            <LoadingSpinner
+                                size={36}
+                                color={'white'}
+                                className={'mx-auto my-4'}
                             />
-                            <button
+                        ) : (
+                            <form
+                                onSubmit={SubmissionHandler}
                                 className={
-                                    'focus:shadow-outline m-auto w-24 rounded bg-purple-500 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out hover:bg-purple-400 focus:outline-none'
-                                }
-                                type={'submit'}>
-                                Submit
-                            </button>
-                        </form>
+                                    'm-auto flex w-80 flex-col space-y-2'
+                                }>
+                                <input
+                                    type={'text'}
+                                    ref={urlInput}
+                                    placeholder='https://www.google.com/'
+                                    pattern={
+                                        'https?://(?!.)(?!.*..)[a-zA-Z0-9.]*.[a-zA-Z]'
+                                    }
+                                    required
+                                    className={
+                                        'mb-2 rounded border-none p-1 px-2 outline outline-0 outline-transparent transition-all duration-100 ease-in-out focus:outline-2 focus:outline-purple-500'
+                                    }
+                                />
+                                <button
+                                    className={
+                                        'focus:shadow-outline m-auto w-24 rounded bg-purple-500 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out hover:bg-purple-400 focus:outline-none'
+                                    }
+                                    type={'submit'}>
+                                    Submit
+                                </button>
+                            </form>
+                        )}
+
                         {mutation.isSuccess ? (
                             <p
                                 onClick={() =>
