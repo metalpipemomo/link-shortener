@@ -63,9 +63,7 @@ const Home: NextPage = () => {
                                     type={'text'}
                                     ref={urlInput}
                                     placeholder='https://www.google.com/'
-                                    pattern={
-                                        'https?://(?!.)(?!.*..)[a-zA-Z0-9.]*.[a-zA-Z]'
-                                    }
+                                    pattern='https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)'
                                     required
                                     className={
                                         'mb-2 rounded border-none p-1 px-2 outline outline-0 outline-transparent transition-all duration-100 ease-in-out focus:outline-2 focus:outline-purple-500'
