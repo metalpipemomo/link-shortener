@@ -1,10 +1,45 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { api } from '~/utils/api';
 
 import AuthButton from './components/AuthButton';
-import LoadingSpinner from './components/LoadingSpinner';
+import { LoadingSpinner, Clipboard } from './components/Icons';
+
+interface CopyButtonProps {
+    url: string;
+}
+
+const CopyField: React.FC<CopyButtonProps> = ({ url }) => {
+    const [copyCol, setCopyCol] = useState('bg-purple-500 hover:bg-purple-400');
+
+    const CopyHandler = (url: string): void => {
+        navigator.clipboard
+            .writeText(`${window.location.toString()}${url}`)
+            .then(() => setCopyCol('bg-green-500 hover:bg-green-400'))
+            .catch((err: PromiseRejectedResult) => {
+                console.log(err.reason);
+                setCopyCol('bg-red-500 hover:bg-red-400');
+            });
+    };
+
+    return (
+        <div className='my-5 flex flex-row justify-center'>
+            <input
+                readOnly
+                className={'h-9 rounded-l-lg py-1 px-2 outline-none'}
+                value={window.location.toString() + url}
+            />
+            <button
+                className={`focus:shadow-outline h-9 w-auto rounded-r-lg transition-all duration-100 ${copyCol} py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out focus:outline-none`}
+                onClick={() => {
+                    CopyHandler(url);
+                }}>
+                <Clipboard color={'white'} size={20} />
+            </button>
+        </div>
+    );
+};
 
 const Home: NextPage = () => {
     const mutation = api.link.createLink.useMutation({});
@@ -19,12 +54,6 @@ const Home: NextPage = () => {
         }
     };
 
-    const CopyHandler = (url: string): void => {
-        navigator.clipboard
-            .writeText(`${window.location.toString()}${url}`)
-            .catch((err: PromiseRejectedResult) => console.log(err.reason));
-    };
-
     return (
         <>
             <Head>
@@ -37,14 +66,17 @@ const Home: NextPage = () => {
                     <div className={'m-auto md:p-5'}>
                         <h1
                             className={
-                                'text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]'
+                                'select-none text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]'
                             }>
                             Link{' '}
                             <span className={'text-[hsl(280,100%,70%)]'}>
                                 Shortener
                             </span>
                         </h1>
-                        <h2 className={'mb-8 text-center tracking-tight'}>
+                        <h2
+                            className={
+                                'mb-8 select-none text-center tracking-tight'
+                            }>
                             Paste your link below!
                         </h2>
                         {mutation.isLoading ? (
@@ -80,21 +112,18 @@ const Home: NextPage = () => {
                         )}
 
                         {mutation.isSuccess ? (
+                            <CopyField url={mutation.data.newLink} />
+                        ) : mutation.isError ? (
                             <p
-                                onClick={() =>
-                                    CopyHandler(mutation.data.newLink)
-                                }
                                 className={
                                     'mt-4 text-center text-[hsl(280,100%,70%)]'
                                 }>
-                                {`${window.location.toString()}${
-                                    mutation.data.newLink
-                                }`}
+                                Failed to create link.
                             </p>
                         ) : null}
                     </div>
                 </div>
-                <div
+                <hr
                     className={
                         'm-5 h-0.5 w-96 bg-white opacity-40 md:m-auto md:h-96 md:w-1'
                     }
