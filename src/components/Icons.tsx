@@ -1,10 +1,8 @@
-type Props = {
-    size: number;
-    color: string;
-    className?: string;
-};
-
-export const LoadingSpinner: React.FC<Props> = ({ size, color, className }) => {
+export const LoadingSpinner: React.FC<IconProps> = ({
+    size,
+    color,
+    className,
+}) => {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -19,7 +17,7 @@ export const LoadingSpinner: React.FC<Props> = ({ size, color, className }) => {
     );
 };
 
-export const Clipboard: React.FC<Props> = ({ size, color, className }) => {
+export const Clipboard: React.FC<IconProps> = ({ size, color, className }) => {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
