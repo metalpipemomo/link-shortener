@@ -6,11 +6,7 @@ import { api } from '~/utils/api';
 import AuthButton from '../components/AuthButton';
 import { LoadingSpinner, Clipboard } from '../components/Icons';
 
-interface CopyButtonProps {
-    url: string;
-}
-
-const CopyField: React.FC<CopyButtonProps> = ({ url }) => {
+const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
     const [copyCol, setCopyCol] = useState('bg-purple-500 hover:bg-purple-400');
 
     const CopyHandler = (url: string): void => {

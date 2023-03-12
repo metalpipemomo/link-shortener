@@ -1,8 +1,8 @@
-interface Props {
+type Props = {
     size: number;
     color: string;
     className?: string;
-}
+};
 
 export const LoadingSpinner: React.FC<Props> = ({ size, color, className }) => {
     return (
