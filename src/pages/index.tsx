@@ -3,8 +3,8 @@ import Head from 'next/head';
 import { FormEvent, useRef, useState } from 'react';
 import { api } from '~/utils/api';
 
-import AuthButton from './components/AuthButton';
-import { LoadingSpinner, Clipboard } from './components/Icons';
+import AuthButton from '../components/AuthButton';
+import { LoadingSpinner, Clipboard } from '../components/Icons';
 
 interface CopyButtonProps {
     url: string;
