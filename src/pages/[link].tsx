@@ -13,7 +13,7 @@ const RedirectPage: NextPage = () => {
             </Head>
             <body>
                 <div>
-                    <p>redirecting...</p>
+                    <p>Redirecting...</p>
                 </div>
             </body>
         </>
