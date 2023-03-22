@@ -44,6 +44,12 @@ const Home: NextPage = () => {
     const SubmissionHandler = (e: FormEvent): void => {
         e.preventDefault();
         try {
+            const regexp = new RegExp(
+                'https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)'
+            );
+            if (urlInput.current && !regexp.test(urlInput.current.value))
+                throw new Error('bad regex :(');
+
             mutation.mutate({ longLink: urlInput.current?.value as string });
         } catch {
             console.error('Something went wrong...');
