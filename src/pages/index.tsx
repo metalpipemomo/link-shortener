@@ -47,7 +47,7 @@ const Home: NextPage = () => {
     const SubmissionHandler = (e: FormEvent): void => {
         e.preventDefault();
         try {
-            const regexp: RegExp =
+            const regexp =
                 /https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
             if (urlInput.current && !regexp.test(urlInput.current.value))
                 throw new Error('bad regex :(');
