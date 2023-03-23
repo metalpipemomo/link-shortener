@@ -125,7 +125,7 @@ const Home: NextPage = () => {
                         ) : null}
                     </div>
                 </div>
-                <hr
+                {/* <hr
                     className={
                         'm-5 h-0.5 w-96 bg-white opacity-40 md:m-auto md:h-96 md:w-1'
                     }
@@ -156,7 +156,7 @@ const Home: NextPage = () => {
                         </p>
                         <AuthButton />
                     </div>
-                </div>
+                </div> */}
             </main>
         </>
     );
