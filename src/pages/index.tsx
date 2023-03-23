@@ -1,10 +1,12 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { FormEvent, useRef, useState } from 'react';
-import { api } from '~/utils/api';
 
-import AuthButton from '../components/AuthButton';
-import { LoadingSpinner, Clipboard } from '../components/Icons';
+import { LoadingSpinner, Clipboard } from '~/components/Icons';
+
+import { FormEvent, useRef, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { api } from '~/utils/api';
+import { sign } from 'crypto';
 
 const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
     const [copyCol, setCopyCol] = useState('bg-purple-500 hover:bg-purple-400');
@@ -40,13 +42,13 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
 const Home: NextPage = () => {
     const mutation = api.link.createLink.useMutation({});
     const urlInput = useRef<HTMLInputElement>(null);
+    const { data: sessionData } = useSession();
 
     const SubmissionHandler = (e: FormEvent): void => {
         e.preventDefault();
         try {
-            const regexp = new RegExp(
-                'https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)'
-            );
+            const regexp: RegExp =
+                /https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
             if (urlInput.current && !regexp.test(urlInput.current.value))
                 throw new Error('bad regex :(');
 
@@ -67,7 +69,7 @@ const Home: NextPage = () => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
             <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] md:flex-row lg:flex-row'>
-                <div className={'flex w-full flex-col py-5'}>
+                <div className={'flex h-screen w-full flex-col py-5'}>
                     <div className={'m-auto md:p-5'}>
                         <h1
                             className={
@@ -85,7 +87,7 @@ const Home: NextPage = () => {
                             <i>{`Say goodbye to lengthy invite links and shorten your URLs in a *snap*!`}</i>
                         </h2>
                         <p className='mb-3 select-none text-center tracking-tight'>
-                            <span className='text-purple-500'>Paste</span>
+                            <b className='text-purple-500'>Paste</b>
                             {` your link below to start!`}
                         </p>
                         {mutation.isLoading ? (
@@ -119,7 +121,6 @@ const Home: NextPage = () => {
                                 </button>
                             </form>
                         )}
-
                         {mutation.isSuccess ? (
                             <CopyField url={mutation.data.newLink} />
                         ) : mutation.isError ? (
@@ -131,39 +132,26 @@ const Home: NextPage = () => {
                             </p>
                         ) : null}
                     </div>
+                    {sessionData ? (
+                        <div className={'flex flex-col text-center'}>
+                            <p>
+                                <i>Welcome back, {sessionData.user.name}!</i>
+                            </p>
+                            <button className={'text-[hsl(280,100%,70%)]'}>
+                                <u>Manage Links</u>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={'flex flex-col text-center'}>
+                            <p>Want to manage your links?</p>
+                            <button
+                                className={'text-[hsl(280,100%,70%)]'}
+                                onClick={() => void signIn()}>
+                                Click here to sign in!
+                            </button>
+                        </div>
+                    )}
                 </div>
-                {/* <hr
-                    className={
-                        'm-5 h-0.5 w-96 bg-white opacity-40 md:m-auto md:h-96 md:w-1'
-                    }
-                />
-                <div className={'flex w-full flex-col space-y-4 py-5'}>
-                    <div className={'m-auto max-w-sm space-y-4 md:p-5'}>
-                        <p className={'overflow-ellipsis'}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Proin vitae ipsum auctor, varius nibh
-                            efficitur, mollis nibh. Proin ac metus dapibus,
-                            mattis ligula nec, feugiat urna. Nam vulputate
-                            bibendum arcu at ornare. Aliquam ut mauris eget
-                            tellus molestie suscipit. Ut quis dolor sit amet
-                            velit imperdiet iaculis. Nulla cursus ornare
-                            porttitor. Mauris ultrices nulla quis dui fermentum,
-                            quis sollicitudin ante aliquam.
-                        </p>
-                        <p className={'overflow-ellipsis'}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Proin vitae ipsum auctor, varius nibh
-                            efficitur, mollis nibh. Proin ac metus dapibus,
-                            mattis ligula nec, feugiat urna. Nam vulputate
-                            bibendum arcu at ornare. Aliquam ut mauris eget
-                            tellus molestie suscipit. Ut quis dolor sit amet
-                            velit imperdiet iaculis. Nulla cursus ornare
-                            porttitor. Mauris ultrices nulla quis dui fermentum,
-                            quis sollicitudin ante aliquam.
-                        </p>
-                        <AuthButton />
-                    </div>
-                </div> */}
             </main>
         </>
     );
