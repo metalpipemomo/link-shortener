@@ -71,7 +71,7 @@ const Home: NextPage = () => {
                     <div className={'m-auto md:p-5'}>
                         <h1
                             className={
-                                'select-none text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]'
+                                'select-none text-center text-[5rem] font-extrabold leading-none tracking-tight'
                             }>
                             E{`-`}
                             <span className={'text-[hsl(280,100%,70%)]'}>
@@ -80,10 +80,14 @@ const Home: NextPage = () => {
                         </h1>
                         <h2
                             className={
-                                'mb-8 select-none text-center tracking-tight'
+                                'mx-auto mb-6 mt-1 max-w-[18rem] select-none text-center tracking-tight'
                             }>
-                            Paste your link below!
+                            <i>{`Say goodbye to lengthy invite links and shorten your URLs in a *snap*!`}</i>
                         </h2>
+                        <p className='mb-3 select-none text-center tracking-tight'>
+                            <span className='text-purple-500'>Paste</span>
+                            {` your link below to start!`}
+                        </p>
                         {mutation.isLoading ? (
                             <LoadingSpinner
                                 size={36}
