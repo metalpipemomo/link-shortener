@@ -1,12 +1,12 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 
 import { LoadingSpinner, Clipboard, Checkmark } from '~/components/Icons';
 
 import { FormEvent, useRef, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
-import { sign } from 'crypto';
 
 const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
     const [copyCol, setCopyCol] = useState('purple');
@@ -65,9 +65,11 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
 };
 
 const Home: NextPage = () => {
-    const mutation = api.link.createLink.useMutation({});
-    const urlInput = useRef<HTMLInputElement>(null);
     const { data: sessionData } = useSession();
+    const mutation = sessionData
+        ? api.link.createLinkProtected.useMutation({})
+        : api.link.createLink.useMutation({});
+    const urlInput = useRef<HTMLInputElement>(null);
 
     const SubmissionHandler = (e: FormEvent): void => {
         e.preventDefault();
@@ -162,9 +164,11 @@ const Home: NextPage = () => {
                             <p>
                                 <i>Welcome back, {sessionData.user.name}!</i>
                             </p>
-                            <button className={'text-[hsl(280,100%,70%)]'}>
+                            <Link
+                                className={'text-[hsl(280,100%,70%)]'}
+                                href={'/links'}>
                                 <u>Manage Links</u>
-                            </button>
+                            </Link>
                         </div>
                     ) : (
                         <div className={'flex flex-col text-center'}>
