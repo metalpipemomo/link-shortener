@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { LoadingSpinner, Clipboard, Checkmark } from '~/components/Icons';
 
 import { FormEvent, useRef, useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
 
 const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
@@ -164,11 +164,22 @@ const Home: NextPage = () => {
                             <p>
                                 <i>Welcome back, {sessionData.user.name}!</i>
                             </p>
-                            <Link
-                                className={'text-[hsl(280,100%,70%)]'}
-                                href={'/links'}>
-                                <u>Manage Links</u>
-                            </Link>
+
+                            <p>
+                                <Link
+                                    className={'text-[hsl(280,100%,70%)]'}
+                                    href={'/links'}>
+                                    <u>{`Manage Links`}</u>
+                                </Link>
+                                {` / `}
+                                <span
+                                    className={
+                                        'cursor-pointer text-[hsl(280,100%,70%)] underline'
+                                    }
+                                    onClick={() => void signOut()}>
+                                    {`Sign Out`}
+                                </span>
+                            </p>
                         </div>
                     ) : (
                         <div className={'flex flex-col text-center'}>

@@ -143,7 +143,7 @@ const Links: NextPage = () => {
                                     'focus:shadow-outline m-auto mt-6 w-24 rounded bg-purple-500 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out hover:bg-purple-400 focus:outline-none'
                                 }
                                 onClick={() => void signIn()}>
-                                {`Sign-in`}
+                                {`Sign In`}
                             </button>
                         </div>
                     )}
