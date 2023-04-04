@@ -1,7 +1,7 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
 
-import { LoadingSpinner, Clipboard } from '~/components/Icons';
+import { LoadingSpinner, Clipboard, Checkmark } from '~/components/Icons';
 
 import { FormEvent, useRef, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
@@ -9,15 +9,15 @@ import { api } from '~/utils/api';
 import { sign } from 'crypto';
 
 const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
-    const [copyCol, setCopyCol] = useState('bg-purple-500 hover:bg-purple-400');
+    const [copyCol, setCopyCol] = useState('purple');
 
     const CopyHandler = (url: string): void => {
         navigator.clipboard
             .writeText(`${window.location.toString()}${url}`)
-            .then(() => setCopyCol('bg-green-500 hover:bg-green-400'))
+            .then(() => setCopyCol('green'))
             .catch((err: PromiseRejectedResult) => {
                 console.log(err.reason);
-                setCopyCol('bg-red-500 hover:bg-red-400');
+                setCopyCol('red');
             });
     };
 
@@ -25,15 +25,24 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
         <div className='my-5 flex flex-row justify-center'>
             <input
                 readOnly
-                className={'h-9 rounded-l-lg py-1 px-2 outline-none'}
+                className={`h-9 rounded-l-lg border-y-2 border-l-2 border-${copyCol}-500 py-1 px-2 outline-none`}
                 value={window.location.toString() + url}
             />
             <button
-                className={`focus:shadow-outline h-9 w-auto rounded-r-lg transition-all duration-100 ${copyCol} py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out focus:outline-none`}
+                className={`focus:shadow-outline grid h-9 w-auto rounded-r-lg border-y-2 border-r-2 border-${copyCol}-500 transition-all duration-100 bg-${copyCol}-500 hover:bg-${copyCol}-400 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out focus:outline-none`}
                 onClick={() => {
                     CopyHandler(url);
                 }}>
-                <Clipboard color={'white'} size={20} />
+                <Clipboard
+                    color={'white'}
+                    size={copyCol != 'green' ? 20 : 0}
+                    className={`col-span-full row-span-full transition-all duration-150`}
+                />
+                <Checkmark
+                    color={'white'}
+                    size={copyCol == 'green' ? 20 : 0}
+                    className={`col-span-full row-span-full transition-all duration-150`}
+                />
             </button>
         </div>
     );
