@@ -82,10 +82,12 @@ const Links: NextPage = () => {
             });
     };
     const deleteLink = (newLink: string) => {
-        mutation.mutate({
-            shortLink: newLink,
-        });
-        query.refetch();
+        void mutation
+            .mutateAsync({
+                shortLink: newLink,
+            })
+            .then(() => void query.refetch())
+            .catch();
     };
 
     return (
@@ -105,7 +107,9 @@ const Links: NextPage = () => {
                 <div className={'flex h-screen w-full flex-col py-5'}>
                     {sessionData ? (
                         <div className='m-auto flex flex-col md:p-5'>
-                            <h1 className='font-center text-center text-3xl font-bold'>{`${sessionData.user.name}'s Links`}</h1>
+                            <h1 className='font-center text-center text-3xl font-bold'>{`${
+                                sessionData.user?.name as string
+                            }'s Links`}</h1>
                             <Link
                                 href='/'
                                 className='text-center text-[hsl(280,100%,70%)] underline'>
@@ -125,21 +129,21 @@ const Links: NextPage = () => {
                                         );
                                     })
                                 ) : (
-                                    <p>You haven't created any links yet!</p>
+                                    <p>{`You haven't created any links yet!`}</p>
                                 )}
                             </div>
                         </div>
                     ) : (
                         <div className={'m-auto flex flex-col md:p-5'}>
                             <h1 className={'text-center'}>
-                                You must be signed in to access this page!
+                                {`You must be signed in to access this page!`}
                             </h1>
                             <button
                                 className={
                                     'focus:shadow-outline m-auto mt-6 w-24 rounded bg-purple-500 py-2 px-4 font-bold text-[hsl(280,100%,70%)] shadow transition duration-100 ease-in-out hover:bg-purple-400 focus:outline-none'
                                 }
                                 onClick={() => void signIn()}>
-                                Sign-in
+                                {`Sign-in`}
                             </button>
                         </div>
                     )}
