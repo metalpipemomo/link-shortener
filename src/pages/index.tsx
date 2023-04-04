@@ -15,6 +15,8 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
     );
     const [copyBorder, setCopyBorder] = useState('border-purple-500');
 
+    console.log('hi');
+
     const CopyHandler = (url: string): void => {
         navigator.clipboard
             .writeText(`${window.location.toString()}${url}`)
@@ -45,13 +47,17 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
                 }}>
                 <Clipboard
                     color={'white'}
-                    size={copyCol != 'green' ? 20 : 0}
-                    className={`col-span-full row-span-full transition-all duration-150`}
+                    size={20}
+                    className={`col-span-full row-span-full transition-all duration-150 ${
+                        copyCol != 'green' ? 'opacity-100' : 'opacity-0'
+                    }`}
                 />
                 <Checkmark
                     color={'white'}
-                    size={copyCol == 'green' ? 20 : 0}
-                    className={`col-span-full row-span-full transition-all duration-150`}
+                    size={20}
+                    className={`col-span-full row-span-full transition-all duration-150 ${
+                        copyCol == 'green' ? 'opacity-100' : 'opacity-0'
+                    }`}
                 />
             </button>
         </div>
