@@ -10,14 +10,24 @@ import { sign } from 'crypto';
 
 const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
     const [copyCol, setCopyCol] = useState('purple');
+    const [copyStyle, setCopyStyle] = useState(
+        'bg-purple-500 hover:bg-purple-400'
+    );
+    const [copyBorder, setCopyBorder] = useState('border-purple-500');
 
     const CopyHandler = (url: string): void => {
         navigator.clipboard
             .writeText(`${window.location.toString()}${url}`)
-            .then(() => setCopyCol('green'))
+            .then(() => {
+                setCopyCol('green');
+                setCopyStyle('bg-green-500 hover:bg-green-400');
+                setCopyBorder('border-green-500');
+            })
             .catch((err: PromiseRejectedResult) => {
                 console.log(err.reason);
                 setCopyCol('red');
+                setCopyStyle('bg-red-500 hover:bg-red-400');
+                setCopyBorder('border-red-500');
             });
     };
 
@@ -25,11 +35,11 @@ const CopyField: React.FC<CopyFieldProps> = ({ url }) => {
         <div className='my-5 flex flex-row justify-center'>
             <input
                 readOnly
-                className={`h-9 rounded-l-lg border-y-2 border-l-2 border-${copyCol}-500 py-1 px-2 outline-none`}
+                className={`h-9 rounded-l-lg border-y-2 border-l-2 ${copyBorder} py-1 px-2 outline-none`}
                 value={window.location.toString() + url}
             />
             <button
-                className={`focus:shadow-outline grid h-9 w-auto rounded-r-lg border-y-2 border-r-2 border-${copyCol}-500 transition-all duration-100 bg-${copyCol}-500 hover:bg-${copyCol}-400 py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out focus:outline-none`}
+                className={`focus:shadow-outline grid h-9 w-auto rounded-r-lg border-y-2 border-r-2 ${copyBorder} transition-all duration-100 ${copyStyle} py-2 px-4 font-bold text-white shadow transition duration-100 ease-in-out focus:outline-none`}
                 onClick={() => {
                     CopyHandler(url);
                 }}>
