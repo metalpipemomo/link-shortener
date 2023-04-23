@@ -14,7 +14,7 @@ datasource db {
 model Link {
     id       Int     @id @default(autoincrement())
     newLink  String  @unique
-    fullLink String
+    fullLink String  @db.Text
     user     User?   @relation(fields: [userId], references: [id])
     userId   String?
 }
